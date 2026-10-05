@@ -12,6 +12,10 @@ def format_bar(percent, width=10):
     return "[" + "=" * filled + " " * (width - filled) + "]"
 
 
+def bytes_to_kb(value):
+    return value / 1024.0
+
+
 def detect_size_tool():
     candidates = [
         shutil.which("riscv-wch-elf-size"),
@@ -100,10 +104,28 @@ def main():
     ram_percent = (ram_used / ram_total) * 100.0
     flash_percent = (flash_used / flash_total) * 100.0
 
+    section_order = [".init", ".vector", ".text", ".fini", ".data", ".bss", ".stack"]
+    section_lines = [
+        f"{name}: {sections[name[1:]]} bytes"
+        for name in section_order
+    ]
+
+    build_stamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     block = (
-        'Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"\n'
+        "# Memory Usage\n\n"
+        f"Build Time: {build_stamp}\n\n"
+        f"Board: {board_name}\n\n"
+        f"Total Flash: {bytes_to_kb(flash_total):.1f} KB\n"
+        f"Used Flash:  {bytes_to_kb(flash_used):.1f} KB\n"
+        f"Total RAM:   {bytes_to_kb(ram_total):.1f} KB\n"
+        f"Used RAM:    {bytes_to_kb(ram_used):.1f} KB\n\n"
+        f"RAM percent: {ram_percent:.1f}%\n"
+        f"Flash percent: {flash_percent:.1f}%\n\n"
         f"RAM:   {format_bar(ram_percent)}  {ram_percent:5.1f}% (used {ram_used} bytes from {ram_total} bytes)\n"
         f"Flash: {format_bar(flash_percent)}  {flash_percent:5.1f}% (used {flash_used} bytes from {flash_total} bytes)\n"
+        + "Sections:\n"
+        + "\n".join(f"  {line}" for line in section_lines)
+        + "\n\n"
     )
 
     memory_usage_path = project_root / "memory_usage"

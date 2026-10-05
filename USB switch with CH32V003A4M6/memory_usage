@@ -1,3 +1,25 @@
-Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+# Memory Usage
+
+Build Time: 2026-10-05 16:54:26
+
+Board: genericCH32V003A4M6
+
+Total Flash: 16.0 KB
+Used Flash:  2.4 KB
+Total RAM:   2.0 KB
+Used RAM:    0.3 KB
+
+RAM percent: 15.0%
+Flash percent: 14.9%
+
 RAM:   [==        ]   15.0% (used 308 bytes from 2048 bytes)
 Flash: [=         ]   14.9% (used 2448 bytes from 16384 bytes)
+Sections:
+  .init: 160 bytes
+  .vector: 32 bytes
+  .text: 2232 bytes
+  .fini: 0 bytes
+  .data: 24 bytes
+  .bss: 28 bytes
+  .stack: 256 bytes
+
